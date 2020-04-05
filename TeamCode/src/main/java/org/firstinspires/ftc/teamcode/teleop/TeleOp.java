@@ -7,10 +7,10 @@
 package org.firstinspires.ftc.teamcode.teleop;
 
 import com.deltarobotics9351.deltadrive.extendable.linearopmodes.holonomic.JoystickHolonomicLinearOpMode;
-import com.deltarobotics9351.deltaevent.event.gamepad.SuperGamepadEvent;
-import com.deltarobotics9351.deltaevent.gamepad.GamepadDataPacket;
-import com.deltarobotics9351.deltaevent.gamepad.button.Button;
-import com.deltarobotics9351.deltaevent.gamepad.button.Buttons;
+import com.deltarobotics9351.java.deltaevent.event.gamepad.SuperGamepadEvent;
+import com.deltarobotics9351.java.deltaevent.gamepad.GamepadDataPacket;
+import com.deltarobotics9351.java.deltaevent.gamepad.button.Button;
+import com.deltarobotics9351.java.deltaevent.gamepad.button.Buttons;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.MotivateTelemetry;

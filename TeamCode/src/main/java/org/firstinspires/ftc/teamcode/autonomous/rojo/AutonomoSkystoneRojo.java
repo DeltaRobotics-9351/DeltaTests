@@ -8,8 +8,8 @@ package org.firstinspires.ftc.teamcode.autonomous.rojo;
 
 import com.deltarobotics9351.deltadrive.extendable.linearopmodes.holonomic.IMUPIDEncoderHolonomicLinearOpMode;
 import com.deltarobotics9351.deltadrive.motors.andymark.NeveRest_Orbital_20;
-import com.deltarobotics9351.deltamath.geometry.Rot2d;
-import com.deltarobotics9351.pid.PIDCoefficients;
+import com.deltarobotics9351.java.deltamath.geometry.Rot2d;
+import com.deltarobotics9351.java.pid.PIDCoefficients;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.MotivateTelemetry;

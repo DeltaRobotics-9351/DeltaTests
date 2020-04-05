@@ -1,8 +1,8 @@
 package org.firstinspires.ftc.teamcode.autonomous.test;
 
 import com.deltarobotics9351.deltadrive.extendable.linearopmodes.holonomic.IMUPIDHolonomicLinearOpMode;
-import com.deltarobotics9351.deltamath.geometry.Rot2d;
-import com.deltarobotics9351.pid.PIDCoefficients;
+import com.deltarobotics9351.java.deltamath.geometry.Rot2d;
+import com.deltarobotics9351.java.pid.PIDCoefficients;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.hardware.Hardware;
