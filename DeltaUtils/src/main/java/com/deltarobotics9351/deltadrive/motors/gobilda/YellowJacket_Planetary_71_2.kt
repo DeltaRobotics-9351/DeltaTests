@@ -26,60 +26,16 @@
  *  More info at https://choosealicense.com/licenses/mit/
  */
 
-buildscript {
-    repositories {
-        jcenter()
-        google()
-    }
-    dependencies{
-        classpath 'com.android.tools.build:gradle:3.5.3'
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
-    }
-}
+package com.deltarobotics9351.deltadrive.motors.gobilda
 
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android-extensions'
-apply plugin: 'kotlin-android'
-apply plugin: 'com.github.dcendents.android-maven'
+import com.deltarobotics9351.deltadrive.utils.gear.TwoGearRatio
 
-group = 'com.github.DeltaRobotics-9351'
+open class YellowJacket_Planetary_71_2 {
 
-android {
-    compileSdkVersion 28
-
-    defaultConfig {
-        minSdkVersion 23
-        targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
-
-        consumerProguardFiles 'consumer-rules.pro'
-    }
-
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
+    companion object {
+        const val TICKS_PER_REVOLUTION = 498.4
+        const val NO_LOAD_RPM = 84
+        val GEAR_RATIO: TwoGearRatio = TwoGearRatio(1.0, 71.2, NO_LOAD_RPM * 71.2)
     }
 
 }
-
-repositories {
-    flatDir {
-        dirs '../libs'
-    }
-    google()
-    jcenter()
-}
-
-dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.aar'])
-    implementation (name: 'RobotCore-release', ext: 'aar')
-    implementation (name: 'Hardware-release', ext: 'aar')
-    implementation (name: 'FtcCommon-release', ext: 'aar')
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    //implementation 'org.nanohttpd:nanohttpd:2.3.1'
-}
-
-
