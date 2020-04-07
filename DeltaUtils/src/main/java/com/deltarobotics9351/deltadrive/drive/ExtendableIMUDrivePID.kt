@@ -40,8 +40,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation
+import kotlin.math.abs
 
-class ExtendableIMUDrivePID {
+open class ExtendableIMUDrivePID {
 
     var imu: BNO055IMU? = null
     var hdw: DeltaHardware? = null
@@ -80,21 +81,10 @@ class ExtendableIMUDrivePID {
      * @param hdw The initialized hardware containing all the chassis motors
      * @param telemetry Current OpMode telemetry to show movement info
      */
-    constructor (hdw: DeltaHardware?, telemetry: Telemetry?) {
+    constructor (hdw: DeltaHardware?, telemetry: Telemetry?, deltaHardwareType: DeltaHardware.Type) {
         this.hdw = hdw
         this.telemetry = telemetry
-    }
-
-    var alreadySetAllowedDeltaHardwareType = false
-
-    /**
-     * INTERNAL LIBRARY METHOD! Should not be used in your TeamCode
-     * @param type ?
-     */
-    fun setAllowedDeltaHardwareType(type: DeltaHardware.Type) {
-        if (alreadySetAllowedDeltaHardwareType) return
-        allowedDeltaHardwareType = type
-        alreadySetAllowedDeltaHardwareType = true
+        this.allowedDeltaHardwareType = deltaHardwareType
     }
 
     fun initIMU(parameters: IMUDriveParameters?) {
@@ -384,30 +374,30 @@ class ExtendableIMUDrivePID {
     fun encoderPIDForward(inches: Double, speed: Double, timeoutS: Double) {
         if (isInitializedEncoders == false) return
         var speed = speed
-        speed = Math.abs(speed)
+        speed = abs(speed)
         val initialRobotHeading = getAngle()
-        encoderPIDDrive(speed, inches, inches, inches, inches, timeoutS, encoderDriveParameters!!.RIGHT_WHEELS_TURBO, encoderDriveParameters!!.LEFT_WHEELS_TURBO, "PID Forward", initialRobotHeading, this, encoderDriveParameters, hdw, telemetry)
+        encoderPIDDrive(speed, inches, inches, inches, inches, timeoutS, encoderDriveParameters!!.RIGHT_WHEELS_TURBO, encoderDriveParameters!!.LEFT_WHEELS_TURBO, "PID Forward", initialRobotHeading, this, encoderDriveParameters, hdw!!, telemetry!!)
     }
 
 
     fun encoderPIDBackwards(inches: Double, speed: Double, timeoutS: Double) {
         if (isInitializedEncoders == false) return
         var speed = speed
-        speed = Math.abs(speed)
+        speed = abs(speed)
         val initialRobotHeading = getAngle()
-        encoderPIDDrive(speed, -inches, -inches, -inches, -inches, timeoutS, encoderDriveParameters!!.RIGHT_WHEELS_TURBO, encoderDriveParameters!!.LEFT_WHEELS_TURBO, "PID Backwards", initialRobotHeading, this, encoderDriveParameters, hdw, telemetry)
+        encoderPIDDrive(speed, -inches, -inches, -inches, -inches, timeoutS, encoderDriveParameters!!.RIGHT_WHEELS_TURBO, encoderDriveParameters!!.LEFT_WHEELS_TURBO, "PID Backwards", initialRobotHeading, this, encoderDriveParameters, hdw!!, telemetry!!)
     }
 
     fun timePIDForward(power: Double, timeSecs: Double) {
         var power = power
-        power = Math.abs(power)
+        power = abs(power)
         val initialRobotHeading = getAngle()
         timePIDDrive(power, power, power, power, timeSecs, initialRobotHeading, this, "PID Forward")
     }
 
     fun timePIDBackwards(power: Double, timeSecs: Double) {
         var power = power
-        power = Math.abs(power)
+        power = abs(power)
         val initialRobotHeading = getAngle()
         timePIDDrive(power, power, power, power, timeSecs, initialRobotHeading, this, "PID Backwards")
     }
@@ -416,7 +406,7 @@ class ExtendableIMUDrivePID {
     fun timePIDDrive(frontleft: Double, frontright: Double, backleft: Double, backright: Double, timeSecs: Double, initialRobotHeading: Double, imu: ExtendableIMUDrivePID?, movementDescription: String?) {}
 
     //needs to extend
-    fun encoderPIDDrive(speed: Double,
+    open fun encoderPIDDrive(speed: Double,
                         frontleft: Double,
                         frontright: Double,
                         backleft: Double,
@@ -424,12 +414,12 @@ class ExtendableIMUDrivePID {
                         timeoutS: Double,
                         rightTurbo: Double,
                         leftTurbo: Double,
-                        movementDescription: String?,
+                        movementDescription: String,
                         initialRobotHeading: Double,
-                        imu: ExtendableIMUDrivePID?,
-                        encoderDriveParameters: EncoderDriveParameters?,
-                        hdw: DeltaHardware?,
-                        telemetry: Telemetry?) { }
+                        imu: ExtendableIMUDrivePID,
+                        encoderDriveParameters: EncoderDriveParameters,
+                        hdw: DeltaHardware,
+                        telemetry: Telemetry) { }
 
     private fun setAllMotorPower(frontleftpower: Double, frontrightpower: Double, backleftpower: Double, backrightpower: Double) {
         when (hdw!!.type) {

@@ -20,27 +20,26 @@
  * SOFTWARE.
  */
 
-package com.deltarobotics9351.deltadrive.drive.holonomic
+package com.deltarobotics9351.deltadrive.drive.hdrive
 
-import com.deltarobotics9351.deltadrive.hardware.DeltaHardwareHolonomic
+import com.deltarobotics9351.deltadrive.hardware.DeltaHardwareHDrive
 import com.deltarobotics9351.deltadrive.utils.Invert
 import com.qualcomm.robotcore.hardware.Gamepad
 import com.qualcomm.robotcore.util.Range
 
 /**
- * Class to control an holonomic chassis during teleop using a gamepad's joysticks.
+ * Class to control an HDrive chassis during teleop using a gamepad's joysticks.
  */
-class JoystickDriveHolonomic {
+class JoystickDriveHDrive {
 
     //wheel motor power
-    var wheelFrontRightPower = 0.0
-    var wheelFrontLeftPower = 0.0
-    var wheelBackRightPower = 0.0
-    var wheelBackLeftPower = 0.0
+    var wheelLeftPower = 0.0
+    var wheelRightPower = 0.0
+    var wheelCenter = 0.0
 
     var turbo = 0.0
 
-    private var hdw: DeltaHardwareHolonomic? = null
+    private var hdw: DeltaHardwareHDrive? = null
 
     private var gamepad: Gamepad = Gamepad()
 
@@ -48,7 +47,7 @@ class JoystickDriveHolonomic {
      * Constructor for the Joystick Drive
      * @param hdw The initialized hardware containing all the chassis motors
      */
-    constructor (hdw: DeltaHardwareHolonomic, gamepad: Gamepad) {
+    constructor (hdw: DeltaHardwareHDrive, gamepad: Gamepad) {
         this.hdw = hdw
         this.gamepad = gamepad;
     }
@@ -58,7 +57,7 @@ class JoystickDriveHolonomic {
     }
 
     /**
-     * Control a mecanum chassis using a gamepad's joysticks.
+     * Control an H-Drive chassis using a gamepad's joysticks.
      * Use left stick to go forward, backwards and strafe, and right stick to turn
      * This method should be called always in the teleop repeat to update the motor powers
      * @param gamepad the gamepad used to control the chassis.

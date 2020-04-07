@@ -40,7 +40,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation
 
 //srry this is an old class, most of the comments are in spanish.
-class ExtendableIMUDrive {
+open class ExtendableIMUDrive {
 
     var imu: BNO055IMU? = null
     var hdw: DeltaHardware? = null
@@ -64,21 +64,10 @@ class ExtendableIMUDrive {
      * @param hdw The initialized DeltaHardware containing all the chassis motors
      * @param telemetry Current OpMode telemetry to show movement info
      */
-    constructor (hdw: DeltaHardware, telemetry: Telemetry) {
+    constructor (hdw: DeltaHardware, telemetry: Telemetry, deltaHardwareType: DeltaHardware.Type) {
         this.hdw = hdw
         this.telemetry = telemetry
-    }
-
-    var alreadySetAllowedDeltaHardwareType = false
-
-    /**
-     * INTERNAL LIBRARY METHOD! Should not be used in your TeamCode
-     * @param type ?
-     */
-    fun setAllowedDeltaHardwareType(type: DeltaHardware.Type) {
-        if (alreadySetAllowedDeltaHardwareType) return
-        allowedDeltaHardwareType = type
-        alreadySetAllowedDeltaHardwareType = true
+        this.allowedDeltaHardwareType = deltaHardwareType
     }
 
     /**

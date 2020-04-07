@@ -26,6 +26,7 @@ import com.deltarobotics9351.deltadrive.hardware.DeltaHardwareHolonomic
 import com.deltarobotics9351.deltamath.DeltaMathUtil
 import com.deltarobotics9351.deltamath.geometry.Rot2d
 import com.deltarobotics9351.deltamath.geometry.Vec2d
+import com.qualcomm.robotcore.hardware.Gamepad
 
 class JoystickFieldCentricDriveHolonomic {
 
@@ -39,12 +40,19 @@ class JoystickFieldCentricDriveHolonomic {
 
     private var hdw: DeltaHardwareHolonomic? = null
 
+    private var gamepad: Gamepad = Gamepad()
+
     /**
      * Constructor for the Joystick Field Centric Drive
      * @param hdw The initialized hardware containing all the chassis motors
      */
-    constructor (hdw: DeltaHardwareHolonomic) {
+    constructor (hdw: DeltaHardwareHolonomic, gamepad: Gamepad) {
         this.hdw = hdw
+        this.gamepad = gamepad
+    }
+
+    fun setGamepad(gamepad: Gamepad){
+        this.gamepad = gamepad;
     }
 
     /**
@@ -57,11 +65,13 @@ class JoystickFieldCentricDriveHolonomic {
      * @param turn the turn speed of the robot, derived from input
      * @param degrees the heading of the robot, derived from the gyro
      */
-    fun driveFieldCentric(drive: Double, strafe: Double,
-                          turn: Double, degrees: Double) {
-        var drive = drive
-        var strafe = strafe
-        var turnSpeed = turn
+    fun update(degrees: Double, turbo: Double) {
+
+        var drive = -gamepad.left_stick_y as Double
+        var strafe = gamepad.left_stick_x as Double
+        var turnSpeed = gamepad.right_stick_x  as Double
+
+        this.turbo = turbo
 
         drive = DeltaMathUtil.clamp(drive, -1.0, 1.0)
         strafe = DeltaMathUtil.clamp(strafe, -1.0, 1.0)
@@ -81,7 +91,6 @@ class JoystickFieldCentricDriveHolonomic {
 
         val max = Math.max(Math.abs(wheelFrontRightPower), Math.max(Math.abs(wheelBackRightPower),
                 Math.max(Math.abs(wheelFrontLeftPower), Math.abs(wheelBackLeftPower))))
-
 
         if (max > 1.0) {
             wheelFrontRightPower /= max
