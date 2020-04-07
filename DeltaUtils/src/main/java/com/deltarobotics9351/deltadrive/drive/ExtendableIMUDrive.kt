@@ -160,7 +160,7 @@ open class ExtendableIMUDrive {
      * @param timeoutS Max time (in seconds) that the rotation may take, set to 0 for infinite time.
      * @return a Twist2d representing how much the robot rotated
      */
-    fun rotate(rotation: Rot2d, power: Double, timeoutS: Double): Twist2d? {
+    fun rotate(rotation: Rot2d, power: Double, timeoutS: Double): Twist2d {
         var power = power
         var timeoutS = timeoutS
 

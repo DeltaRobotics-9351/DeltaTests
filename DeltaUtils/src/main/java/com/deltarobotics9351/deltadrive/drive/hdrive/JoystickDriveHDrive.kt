@@ -23,9 +23,11 @@
 package com.deltarobotics9351.deltadrive.drive.hdrive
 
 import com.deltarobotics9351.deltadrive.hardware.DeltaHardwareHDrive
-import com.deltarobotics9351.deltadrive.utils.Invert
+import com.deltarobotics9351.deltamath.DeltaMathUtil
 import com.qualcomm.robotcore.hardware.Gamepad
 import com.qualcomm.robotcore.util.Range
+import kotlin.math.abs
+import kotlin.math.max
 
 /**
  * Class to control an HDrive chassis during teleop using a gamepad's joysticks.
@@ -33,9 +35,9 @@ import com.qualcomm.robotcore.util.Range
 class JoystickDriveHDrive {
 
     //wheel motor power
-    var wheelLeftPower = 0.0
-    var wheelRightPower = 0.0
-    var wheelCenter = 0.0
+    var wheelsLeftPower = 0.0
+    var wheelsRightPower = 0.0
+    var wheelMiddlePower = 0.0
 
     var turbo = 0.0
 
@@ -63,64 +65,33 @@ class JoystickDriveHDrive {
      * @param gamepad the gamepad used to control the chassis.
      * @param turbo the chassis % of speed, from 0 to 1
      */
-    fun update(turbo: Double) {
-        var turbo = turbo
+    fun update(turbo: Double){
 
-        turbo = Math.abs(turbo)
-        turbo = Range.clip(turbo, 0.0, 1.0)
+        var turbo = abs(turbo)
+        turbo = DeltaMathUtil.clamp(turbo, 0.0, 1.0)
 
         this.turbo = turbo
 
-        val y1 = -gamepad.left_stick_y.toDouble()
-        val x1 = gamepad.left_stick_x.toDouble()
-        val x2 = gamepad.right_stick_x.toDouble()
+        val drive = -gamepad.left_stick_y.toDouble()
+        val strafe = gamepad.left_stick_x.toDouble()
+        val turn = gamepad.right_stick_x.toDouble()
 
-        when (hdw!!.invert) {
-            Invert.RIGHT_SIDE -> {
-                wheelFrontRightPower = -(y1 - x2 - x1)
-                wheelBackRightPower = -(y1 - x2 + x1)
-                wheelFrontLeftPower = y1 + x2 + x1
-                wheelBackLeftPower = y1 + x2 - x1
-            }
-            Invert.LEFT_SIDE -> {
-                wheelFrontRightPower = y1 - x2 - x1
-                wheelBackRightPower = y1 - x2 + x1
-                wheelFrontLeftPower = -(y1 + x2 + x1)
-                wheelBackLeftPower = -(y1 + x2 - x1)
-            }
-            Invert.BOTH_SIDES -> {
-                wheelFrontRightPower = -(y1 - x2 - x1)
-                wheelBackRightPower = -(y1 - x2 + x1)
-                wheelFrontLeftPower = -(y1 + x2 + x1)
-                wheelBackLeftPower = -(y1 + x2 - x1)
-            }
-            Invert.NO_INVERT -> {
-                wheelFrontRightPower = y1 - x2 - x1
-                wheelBackRightPower = y1 - x2 + x1
-                wheelFrontLeftPower = y1 + x2 + x1
-                wheelBackLeftPower = y1 + x2 - x1
-            }
-        }
+        wheelsRightPower = drive - turn
+        wheelsLeftPower = drive + turn
+        wheelMiddlePower = strafe
 
-        val max = Math.max(Math.abs(wheelFrontRightPower), Math.max(Math.abs(wheelBackRightPower),
-                Math.max(Math.abs(wheelFrontLeftPower), Math.abs(wheelBackLeftPower))))
+        val max: Double = max(abs(wheelsLeftPower), abs(wheelsRightPower))
 
         if (max > 1.0) {
-            wheelFrontRightPower /= max
-            wheelBackRightPower /= max
-            wheelFrontLeftPower /= max
-            wheelBackLeftPower /= max
+            wheelsLeftPower /= max
+            wheelsRightPower /= max
         }
 
-        wheelFrontRightPower *= turbo
-        wheelBackRightPower *= turbo
-        wheelFrontLeftPower *= turbo
-        wheelBackLeftPower *= turbo
+        wheelsLeftPower *= turbo
+        wheelsRightPower *= turbo
+        wheelMiddlePower *= turbo
 
-        hdw!!.wheelFrontRight!!.power = wheelFrontRightPower
-        hdw!!.wheelFrontLeft!!.power = wheelFrontLeftPower
-        hdw!!.wheelBackRight!!.power = wheelBackRightPower
-        hdw!!.wheelBackLeft!!.power = wheelBackLeftPower
+        hdw!!.setAllMotorPower(wheelsLeftPower, wheelsRightPower, wheelMiddlePower)
     }
 
 }

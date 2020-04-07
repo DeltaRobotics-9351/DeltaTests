@@ -40,7 +40,7 @@ class TimeDriveHolonomic {
      * @param hdw The initialized hardware containing all the chassis motors
      * @param telemetry The current OpMode telemetry to show info related tnto the moveme
      */
-    constructor (hdw: DeltaHardwareHolonomic?, telemetry: Telemetry?) {
+    constructor (hdw: DeltaHardwareHolonomic, telemetry: Telemetry?) {
         this.hdw = hdw
         this.telemetry = telemetry
     }

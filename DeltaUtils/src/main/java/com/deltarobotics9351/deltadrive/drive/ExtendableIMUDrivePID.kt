@@ -116,7 +116,7 @@ open class ExtendableIMUDrivePID {
         pidCoefficientsRotate = coefficients
     }
 
-    fun getRotatePID(): PIDCoefficients? {
+    fun getRotatePID(): PIDCoefficients {
         return pidCoefficientsRotate
     }
 
@@ -142,7 +142,7 @@ open class ExtendableIMUDrivePID {
         pidCoefficientsDrive = coefficients
     }
 
-    fun getDrivePID(): PIDCoefficients? {
+    fun getDrivePID(): PIDCoefficients {
         return pidCoefficientsDrive
     }
 
@@ -206,7 +206,7 @@ open class ExtendableIMUDrivePID {
         globalAngle = 0.0
     }
 
-    fun getRobotAngle(): Rot2d? {
+    fun getRobotAngle(): Rot2d {
         return Rot2d.fromDegrees(getAngle())
     }
 
@@ -217,7 +217,7 @@ open class ExtendableIMUDrivePID {
      * @param timeoutS The max time the rotation can take, to avoid robot getting stuck.
      * @return Twist2d containing how much the robot rotated
      */
-    fun rotate(rotation: Rot2d, power: Double, timeoutS: Double): Twist2d? {
+    fun rotate(rotation: Rot2d, power: Double, timeoutS: Double): Twist2d {
         var power = power
         var timeoutS = timeoutS
 
